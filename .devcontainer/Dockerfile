@@ -2,8 +2,9 @@ FROM mcr.microsoft.com/devcontainers/rust:1.0.14-bullseye
 
 RUN rustup target add wasm32-unknown-unknown ; rustup update
 
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+
+RUN bash nodesource_setup.sh && apt-get install -y nodejs
 
 RUN cargo install protoc-gen-prost protoc-gen-prost-crate
 
@@ -30,13 +31,10 @@ RUN VER=$(curl --silent -qI https://github.com/streamingfast/substreams/releases
 RUN npm install -g @graphprotocol/graph-cli
 
 # the 'help' command will be added in post-create steps
-COPY <<EOF /etc/motd
-Welcome to the Substreams Development Environment!
-
-Type 'help' to see a list of available commands.
-Type 'substreams init' to start building your substreams!
----------------------------------------------------------
-EOF
+RUN echo "Welcome to the Substreams Development Environment!\n\
+Type 'help' to see a list of available commands.\n\
+Type 'substreams init' to start building your substreams!\n\
+---------------------------------------------------------" > /etc/motd
 
 # docker buildx build --platform linux/amd64  . -t ghcr.io/streamingfast/substreams-starter:latest
 # docker push ghcr.io/streamingfast/substreams-starter:latest

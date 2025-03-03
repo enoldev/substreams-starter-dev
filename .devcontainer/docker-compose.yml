@@ -1,6 +1,6 @@
 services:
   main:
-    image: ghcr.io/streamingfast/substreams-starter:v0.1.4
+    image: ghcr.io/enoldev/substreams-starter:v0.1.5
     platform: linux/amd64
     volumes:
       - ..:/workspace:cached
